@@ -45,7 +45,18 @@ footer{padding:0 0 36px;text-align:center;color:#667085}
 </head>
 <body>
 <header class="hero">
-  <img class="hero-media" src="./assets/hero.jpg?v=20260918-4" alt="趣味・勉強・癒しを楽しめる整理された部屋" width="640" height="360" decoding="async" fetchpriority="high">
+  <img
+    class="hero-media"
+    src="./assets/hero-1280.webp?v=20260918-8"
+    srcset="./assets/hero-1280.webp?v=20260918-8 1280w, ./assets/hero-1672.webp?v=20260918-8 1672w"
+    sizes="100vw"
+    alt="趣味・勉強・癒しを楽しめる整理された部屋"
+    width="1672"
+    height="941"
+    decoding="async"
+    fetchpriority="high"
+    onerror="this.onerror=null;this.src='./assets/hero.jpg?v=20260918-4';this.removeAttribute('srcset');"
+  >
   <div class="wrap">
     <div class="badge">AI曲芸師 ・ 作成日 2026-09-18</div>
     <h1>公平さんの<br>部屋づくり</h1>
