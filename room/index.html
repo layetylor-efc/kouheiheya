@@ -34,11 +34,26 @@ main{padding:36px 0 70px}
 .zones{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .zone{padding:18px;border-radius:14px;background:#fff;border:1px solid #eadfae;text-align:center;font-weight:800}
 .footer-note{text-align:center;font-weight:900;color:#765700;margin-top:18px}
+.weekly{margin-top:26px;background:#fff;border:2px solid #cfe2ff;border-radius:22px;padding:26px;box-shadow:0 12px 28px rgba(32,72,128,.10)}
+.weekly h2{margin:0 0 8px;color:var(--blue)}
+.weekly-lead{margin:0 0 18px;color:#53607a;font-weight:700}
+.weekly-list{display:grid;gap:10px;margin:18px 0}
+.weekly-item{display:flex;align-items:flex-start;gap:10px;padding:14px;border:1px solid #dce8f8;border-radius:14px;background:#f8fbff}
+.weekly-item input{width:22px;height:22px;margin-top:2px;accent-color:var(--blue)}
+.weekly-item label{font-weight:700;cursor:pointer}
+.weekly-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.weekly-meta label{font-size:.9rem;font-weight:800;color:#53607a}
+.weekly-meta input,.weekly-meta textarea{width:100%;margin-top:6px;border:1px solid #cfd9e8;border-radius:12px;padding:12px;font:inherit;background:#fff}
+.weekly-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.weekly-btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
+.weekly-btn.primary{background:var(--blue);color:#fff}
+.weekly-btn.sub{background:#edf5ff;color:#174f9a}
+.weekly-status{margin-top:12px;font-weight:800;color:#174f9a}
 footer{padding:0 0 36px;text-align:center;color:#667085}
 @media(max-width:760px){
   .hero-copy .wrap{padding:24px 0 30px}
-  .grid,.zones{grid-template-columns:1fr}
-  .card,.intro,.next{padding:20px}
+  .grid,.zones,.weekly-meta{grid-template-columns:1fr}
+  .card,.intro,.next,.weekly{padding:20px}
 }
 </style>
 </head>
@@ -69,6 +84,7 @@ footer{padding:0 0 36px;text-align:center;color:#667085}
       <h1>公平さんの<br>部屋づくり</h1>
       <p class="lead">片付けから、趣味・勉強・交流の基地づくりへ。<br>「物を減らす」だけではなく、部屋の目的そのものをアップデート。</p>
       <a class="cta" href="#summary">クエストを見る</a>
+      <a class="cta" href="#weekly" style="margin-left:8px">週1チェック</a>
     </div>
   </div>
 </header>
@@ -81,7 +97,71 @@ footer{padding:0 0 36px;text-align:center;color:#667085}
     <article class="card purple"><h2>⑤ 今回の成果</h2><ul><li>勉強しやすい机まわりに進化</li><li>部屋に「道」ができた</li><li>片付けへのやる気が出やすい状態になった</li><li>根本的な考え方をアップデートし始めた</li></ul><div class="quest">🏆 無限片付けループから脱出。次は“維持できる設計”へ。</div></article>
   </section>
   <section class="next" id="next"><h2>次のクエスト：3ゾーン固定</h2><div class="zones"><div class="zone">📚 机エリア<br>＝ 勉強</div><div class="zone">🎮 テレビ周辺<br>＝ 趣味</div><div class="zone">👥 空きスペース<br>＝ 交流</div></div><div class="footer-note">3つのゾーンを決めると、散らかりにくく「戻しやすい部屋」になる。</div></section>
+  <section class="weekly" id="weekly">
+    <h2>夫婦で週1チェック</h2>
+    <p class="weekly-lead">10分だけ。「責める」ではなく、「来週もっと楽にする」ための確認です。</p>
+    <div class="weekly-list">
+      <div class="weekly-item"><input type="checkbox" id="w1"><label for="w1">机まわりは、すぐ勉強を始められる状態？</label></div>
+      <div class="weekly-item"><input type="checkbox" id="w2"><label for="w2">床・通路に物が戻ってきていない？</label></div>
+      <div class="weekly-item"><input type="checkbox" id="w3"><label for="w3">趣味グッズは「飾る / 残す / しまう」に収まっている？</label></div>
+      <div class="weekly-item"><input type="checkbox" id="w4"><label for="w4">2人が使う共有スペースは気持ちよく使える？</label></div>
+      <div class="weekly-item"><input type="checkbox" id="w5"><label for="w5">来週ひとつだけ改善する場所を決めた？</label></div>
+    </div>
+    <div class="weekly-meta">
+      <label>チェック日<input type="date" id="checkDate"></label>
+      <label>来週の1クエスト<textarea id="nextQuest" rows="3" placeholder="例：机の右側だけ10分で整理"></textarea></label>
+    </div>
+    <div class="weekly-actions">
+      <button class="weekly-btn primary" id="saveWeekly" type="button">今週のチェックを保存</button>
+      <button class="weekly-btn sub" id="resetWeekly" type="button">チェックをリセット</button>
+    </div>
+    <div class="weekly-status" id="weeklyStatus" aria-live="polite"></div>
+  </section>
 </main>
 <footer>AI曲芸師 / 2026-09-18</footer>
+<script>
+(function(){
+  const ids=['w1','w2','w3','w4','w5'];
+  const date=document.getElementById('checkDate');
+  const quest=document.getElementById('nextQuest');
+  const status=document.getElementById('weeklyStatus');
+  const key='kouhei-weekly-check-v1';
+  if(!date.value) date.value=new Date().toISOString().slice(0,10);
+
+  function render(){
+    const done=ids.filter(id=>document.getElementById(id).checked).length;
+    status.textContent='達成 '+done+' / 5'+(done===5?'　🏆 今週の基地メンテ完了！':'');
+  }
+  function load(){
+    try{
+      const saved=JSON.parse(localStorage.getItem(key)||'null');
+      if(saved){
+        ids.forEach((id,i)=>document.getElementById(id).checked=!!saved.checks[i]);
+        if(saved.date) date.value=saved.date;
+        if(saved.quest) quest.value=saved.quest;
+      }
+    }catch(e){}
+    render();
+  }
+  ids.forEach(id=>document.getElementById(id).addEventListener('change',render));
+  document.getElementById('saveWeekly').addEventListener('click',()=>{
+    localStorage.setItem(key,JSON.stringify({
+      checks:ids.map(id=>document.getElementById(id).checked),
+      date:date.value,
+      quest:quest.value
+    }));
+    render();
+    status.textContent+='　保存しました';
+  });
+  document.getElementById('resetWeekly').addEventListener('click',()=>{
+    ids.forEach(id=>document.getElementById(id).checked=false);
+    quest.value='';
+    date.value=new Date().toISOString().slice(0,10);
+    localStorage.removeItem(key);
+    render();
+  });
+  load();
+})();
+</script>
 </body>
 </html>
