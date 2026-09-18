@@ -9,15 +9,16 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Yu Gothic",Meiryo,sans-serif;background:linear-gradient(#f9fcff,#eef6ff);color:var(--ink);line-height:1.7}
-.hero{position:relative;min-height:72vh;display:flex;align-items:end;overflow:hidden;background:#33425e}
-.hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;display:block}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,20,44,.82) 0%,rgba(9,20,44,.60) 42%,rgba(9,20,44,.12) 78%,rgba(9,20,44,.05) 100%);pointer-events:none}
+.hero{background:#13223d}
+.hero-visual{width:100%;background:#111;overflow:hidden}
+.hero-media{display:block;width:100%;height:auto;object-fit:contain;object-position:center center}
 .wrap{width:min(1100px,92%);margin:auto}
-.hero .wrap{position:relative;z-index:2;padding:64px 0 56px;color:#fff}
-.badge{display:inline-block;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.15);font-weight:700;backdrop-filter:blur(8px)}
-h1{font-size:clamp(2.5rem,7vw,5.3rem);line-height:1.03;margin:.55rem 0;text-shadow:0 6px 24px rgba(0,0,0,.35)}
-.lead{max-width:760px;font-size:clamp(1.05rem,2.3vw,1.45rem);font-weight:700;text-shadow:0 3px 12px rgba(0,0,0,.28)}
-.cta{display:inline-block;margin-top:14px;padding:11px 16px;background:#fff;color:#102044;text-decoration:none;border-radius:12px;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.hero-copy{background:linear-gradient(135deg,#0f1c34,#1d355d);color:#fff}
+.hero-copy .wrap{padding:34px 0 38px}
+.badge{display:inline-block;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.15);font-weight:700}
+h1{font-size:clamp(2.35rem,7vw,5rem);line-height:1.03;margin:.55rem 0}
+.lead{max-width:760px;font-size:clamp(1.02rem,2.3vw,1.35rem);font-weight:700}
+.cta{display:inline-block;margin-top:14px;padding:11px 16px;background:#fff;color:#102044;text-decoration:none;border-radius:12px;font-weight:800}
 main{padding:36px 0 70px}
 .intro{background:linear-gradient(135deg,#14264e,#1d3d84);color:#fff;border-radius:22px;padding:26px;margin-bottom:24px;box-shadow:0 12px 28px rgba(32,72,128,.10)}
 .intro strong{color:#ffd761}
@@ -35,9 +36,7 @@ main{padding:36px 0 70px}
 .footer-note{text-align:center;font-weight:900;color:#765700;margin-top:18px}
 footer{padding:0 0 36px;text-align:center;color:#667085}
 @media(max-width:760px){
-  .hero{min-height:62vh}
-  .hero-media{object-position:60% center}
-  .hero .wrap{padding:42px 0 38px}
+  .hero-copy .wrap{padding:24px 0 30px}
   .grid,.zones{grid-template-columns:1fr}
   .card,.intro,.next{padding:20px}
 }
@@ -45,23 +44,32 @@ footer{padding:0 0 36px;text-align:center;color:#667085}
 </head>
 <body>
 <header class="hero">
-  <img
-    class="hero-media"
-    src="./assets/hero-1280.webp?v=20260918-9"
-    srcset="./assets/hero-1280.webp?v=20260918-9 1280w, ./assets/hero-1672.webp?v=20260918-9 1672w"
-    sizes="100vw"
-    alt="趣味・勉強・癒しを楽しめる整理された部屋"
-    width="1672"
-    height="941"
-    decoding="async"
-    fetchpriority="high"
-    onerror="this.onerror=null;this.src='./assets/hero.jpg?v=20260918-4';this.removeAttribute('srcset');"
-  >
-  <div class="wrap">
-    <div class="badge">AI曲芸師 ・ 作成日 2026-09-18</div>
-    <h1>公平さんの<br>部屋づくり</h1>
-    <p class="lead">片付けから、趣味・勉強・交流の基地づくりへ。<br>「物を減らす」だけではなく、部屋の目的そのものをアップデート。</p>
-    <a class="cta" href="#summary">クエストを見る</a>
+  <div class="hero-visual">
+    <picture>
+      <source
+        type="image/webp"
+        srcset="./assets/hero-1280.webp?v=20260918-10 1280w, ./assets/hero-1672.webp?v=20260918-10 1672w"
+        sizes="100vw">
+      <img
+        class="hero-media"
+        src="./assets/hero-1280.webp?v=20260918-10"
+        srcset="./assets/hero-1280.webp?v=20260918-10 1280w, ./assets/hero-1672.webp?v=20260918-10 1672w"
+        sizes="100vw"
+        alt="趣味・勉強・癒しを楽しめる整理された部屋"
+        width="1672"
+        height="941"
+        decoding="async"
+        fetchpriority="high"
+        onerror="this.onerror=null;this.src='./assets/hero.jpg?v=20260918-4';this.removeAttribute('srcset');">
+    </picture>
+  </div>
+  <div class="hero-copy">
+    <div class="wrap">
+      <div class="badge">AI曲芸師 ・ 作成日 2026-09-18</div>
+      <h1>公平さんの<br>部屋づくり</h1>
+      <p class="lead">片付けから、趣味・勉強・交流の基地づくりへ。<br>「物を減らす」だけではなく、部屋の目的そのものをアップデート。</p>
+      <a class="cta" href="#summary">クエストを見る</a>
+    </div>
   </div>
 </header>
 <main class="wrap" id="summary">
